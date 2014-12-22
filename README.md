@@ -5,7 +5,7 @@ Python PayTrail REST api implementation
 Example:
   
   views.py:
-  
+```python  
   def index(request):
     context = RequestContext(request)
     paytrail_urlset = PaytrailRestUrlset(success_url='http://localhost:8000/success',
@@ -18,7 +18,8 @@ Example:
     context_dict = {}
     context_dict['result'] = result
     return render_to_response('index.html', context_dict, context)
-
+  
+  
   def success(request):
     context = RequestContext(request)
     print('++success++')
@@ -32,9 +33,9 @@ Example:
     )
     context_dict['valid'] = res
     return render_to_response('success.html', context_dict, context)
-    
+```
 index.html:
-  
+```  html
 <!DOCTYPE html>
 <html>
 <head lang="en">
@@ -45,9 +46,9 @@ index.html:
 <a href="{{ result.get_url }}">Test paytrail</a>
 </body>
 </html>
-
+```
 success.html:
-
+```html
 <!DOCTYPE html>
 <html>
 <head lang="en">
@@ -59,4 +60,5 @@ success.html:
 {{ valid }}
 </body>
 </html>
+```
 
