@@ -2,6 +2,7 @@ paytrail-rest-api
 =================
 
 Python PayTrail REST api implementation
+
 Example:
   
   views.py:
