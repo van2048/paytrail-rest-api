@@ -6,7 +6,12 @@ Python PayTrail REST api implementation
 Example:
   
   views.py:
-```python  
+```python
+
+from django.template import RequestContext
+from django.shortcuts import render_to_response
+from paytrail_rest_api.paytrail import PaytrailRest, PaytrailRestUrlset, PaytrailRestPaymentS1
+
   def index(request):
     context = RequestContext(request)
     paytrail_urlset = PaytrailRestUrlset(success_url='http://localhost:8000/success',
