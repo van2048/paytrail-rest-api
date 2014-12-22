@@ -478,16 +478,6 @@ class PaytrailRest(object):
                 message=data['errorMessage']
             )
 
-        # if result.httpCode != 201:
-        #     if result.contentType == 'application/xml':
-        #         xml = simplexml_load_string(result.response)
-        #
-        #         raise PaytrailException(xml.errorMessage, xml.errorCode)
-        #     elif result.contentType == 'application/json':
-        #         json = json_decode(result.response)
-        #
-        #         raise PaytrailException(json.errorMessage, json.errorCode)
-
         data = json.loads(result.content)
 
         if not data:
@@ -515,7 +505,6 @@ class PaytrailRest(object):
         @param int method
         @param string auth_code
         """
-        # base = '{orderNumber}|{timeStamp}|{paid}|{method}|{$this._merchantSecret}'
         base = '|'.join((order_number, time_stamp, paid, method, self._merchant_secret,))
         _hash = hashlib.md5(base).hexdigest().upper()
         return auth_code == _hash
@@ -530,45 +519,6 @@ class PaytrailRest(object):
         @throws PaytrailException
         """
 
-        # Check that curl is available
-        # if not function_exists('curl_init'):
-        #   raise PaytrailException('Curl extension is not available. Paytrail_Module_Rest requires curl.')
-
-        # Set all the curl options
-        # ch = curl_init()
-        # curl_setopt(ch, CURLOPT_URL, url)
-        # curl_setopt(ch, CURLOPT_SSL_VERIFYPEER, false)
-        # curl_setopt(ch, CURLOPT_SSL_VERIFYHOST, 2)
-        # curl_setopt(ch, CURLOPT_FOLLOWLOCATION, false)
-        # curl_setopt(ch, CURLOPT_MAXREDIRS, 1)
-        # curl_setopt(ch, CURLOPT_RETURNTRANSFER, true)
-        # curl_setopt(ch, CURLOPT_HTTPHEADER, [
-        #     'Content-Type: application/json',
-        #     'Accept: application/json',
-        #     'X-Verkkomaksut-Api-Version: 1'
-        # ])
-        # curl_setopt(ch, CURLOPT_USERPWD, self._merchant_id + ':' + self._merchant_secret)
-        # curl_setopt(ch, CURLOPT_POST, true)
-        # curl_setopt(ch, CURLOPT_POSTFIELDS, $content)
-        # curl_setopt(ch, CURLOPT_CONNECTTIMEOUT, 15)
-        # curl_setopt(ch, CURLOPT_TIMEOUT, 30)
-
         result = self.session.post(url, data=json.dumps(content))
-
-        # Read result, including http code
-        # result = new StdClass()
-        # result.response = curl_exec(ch)
-        # result.httpCode = curl_getinfo(ch, CURLINFO_HTTP_CODE)
-        # result.contentType = curl_getinfo(ch, CURLINFO_CONTENT_TYPE)
-
-        # Got no status code?
-        # curlError = result.httpCode > 0 ? None : curl_error(ch)+' ('+ curl_errno$ch) + ')'
-
-        # curl_close(ch)
-
-        # Connection failure
-        # if curlError:
-        #     raise PaytrailException('Connection failure. Please check that payment.paytrail.com is
-        #  reachable from your environment ({$curlError})')
 
         return result
