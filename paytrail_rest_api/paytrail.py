@@ -506,7 +506,7 @@ class PaytrailRest(object):
         @param string auth_code
         """
         base = '|'.join((order_number, time_stamp, paid, method, self._merchant_secret,))
-        _hash = hashlib.md5(base).hexdigest().upper()
+        _hash = hashlib.md5(base.encode('utf-8')).hexdigest().upper()
         return auth_code == _hash
 
     def _post_json_request(self, url, content):
