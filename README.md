@@ -9,11 +9,11 @@ Example:
 ```python
 
 from django.template import RequestContext
-from django.shortcuts import render_to_response
+from django.shortcuts import render
 from paytrail_rest_api.paytrail import PaytrailRest, PaytrailRestUrlset, PaytrailRestPaymentS1
 
   def index(request):
-    context = RequestContext(request)
+
     paytrail_urlset = PaytrailRestUrlset(success_url='http://localhost:8000/success',
                                          failure_url='http://localhost:8000/failure',
                                          notification_url='http://localhost:8000/notification'
@@ -21,15 +21,16 @@ from paytrail_rest_api.paytrail import PaytrailRest, PaytrailRestUrlset, Paytrai
     payment = PaytrailRestPaymentS1(order_number='1', urlset=paytrail_urlset, price='10.00')
     paytrail_api = PaytrailRest(merchant_id='13466', merchant_secret='6pKF4jkv97zmqBJ3ZL8gUw5DfT2NMQ')
     result = paytrail_api.process_payment(payment)
-    context_dict = {}
-    context_dict['result'] = result
-    return render_to_response('index.html', context_dict, context)
-  
+
+    context = {
+        'result': result
+    }
+
+    return render(request, "paytrail_rest_api/index.html", context)  
   
   def success(request):
-    context = RequestContext(request)
     print('++success++')
-    context_dict = {'boldmessage': "I am bold font from the context"}
+    boldmessage =  "I am bold font from the context"}
     paytrail_api = PaytrailRest(merchant_id='13466', merchant_secret='6pKF4jkv97zmqBJ3ZL8gUw5DfT2NMQ')
     res = paytrail_api.confirm_payment(order_number=request.GET['ORDER_NUMBER'],
                                  time_stamp=request.GET['TIMESTAMP'],
@@ -38,7 +39,14 @@ from paytrail_rest_api.paytrail import PaytrailRest, PaytrailRestUrlset, Paytrai
                                  auth_code=request.GET['RETURN_AUTHCODE']
     )
     context_dict['valid'] = res
-    return render_to_response('success.html', context_dict, context)
+        context = {
+        'valid': res,
+        'boldmessage': boldmessage,
+
+    }
+
+    return render(request, "paytrail_rest_api/success.html", context)
+
 ```
 index.html:
 ```  html
